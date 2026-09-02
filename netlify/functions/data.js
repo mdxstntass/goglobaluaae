@@ -1,6 +1,7 @@
 'use strict';
 
 const { buildEnvelope } = require('../../lib/payload');
+const webhook = require('../../lib/webhook');
 const amocrm = require('../../lib/amocrm');
 const mailer = require('../../lib/mailer');
 
@@ -52,23 +53,33 @@ exports.handler = async function handler(event) {
   const { envelope, ambassador } = built;
   console.log('lead envelope:', JSON.stringify(envelope));
 
-  // CRM and email are independent — one failing must not lose the other.
-  const [crmResult, mailResult] = await Promise.allSettled([
+  // The three destinations are independent — one failing must not lose the
+  // others. The webhook feeds amoCRM; the direct amoCRM client only runs when
+  // AMOCRM_BASE_URL/AMOCRM_TOKEN are set, for accounts that skip the webhook.
+  const [hookResult, crmResult, mailResult] = await Promise.allSettled([
+    webhook.send(envelope),
     amocrm.createLead(envelope, ambassador),
     mailer.sendConfirmation(envelope.post),
   ]);
 
-  const crm = crmResult.status === 'fulfilled'
-    ? crmResult.value
-    : { error: crmResult.reason && crmResult.reason.message };
-  const mail = mailResult.status === 'fulfilled'
-    ? mailResult.value
-    : { error: mailResult.reason && mailResult.reason.message };
+  const settled = (r) => (r.status === 'fulfilled'
+    ? r.value
+    : { error: r.reason && r.reason.message });
 
+  const hook = settled(hookResult);
+  const crm = settled(crmResult);
+  const mail = settled(mailResult);
+
+  if (hook.error) console.error('webhook failed:', hook.error);
   if (crm.error) console.error('amoCRM failed:', crm.error);
   if (mail.error) console.error('email failed:', mail.error);
 
-  // The lead reaching the CRM is what decides success for the visitor.
-  const ok = !crm.error;
-  return reply(ok ? 200 : 502, { ok, crm, mail, envelope }, origin);
+  // The lead reaching the CRM is what decides success for the visitor; a
+  // failed confirmation email must not make them submit the form again.
+  const delivered = (hook.skipped ? null : !hook.error);
+  const crmDirect = (crm.skipped ? null : !crm.error);
+  const ok = delivered === true || crmDirect === true
+    || (delivered === null && crmDirect === null);
+
+  return reply(ok ? 200 : 502, { ok, webhook: hook, crm, mail, envelope }, origin);
 };

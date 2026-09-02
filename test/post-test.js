@@ -107,6 +107,8 @@ function check(label, fn) {
     assert.strictEqual(okBody.envelope.URL, 'goglobal-uae.com/ambassador?=Sergey'));
   check('CRM is skipped without credentials', () =>
     assert.ok(okBody.crm.skipped || okBody.crm.leadId));
+  check('webhook result is reported', () =>
+    assert.ok(okBody.webhook && (okBody.webhook.skipped || okBody.webhook.status)));
 
   const bad = await handler({ httpMethod: 'POST', headers: HEADERS, body: JSON.stringify({ name: '' }) });
   check('invalid POST returns 422', () => assert.strictEqual(bad.statusCode, 422));
