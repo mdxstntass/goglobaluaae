@@ -66,7 +66,7 @@ exports.handler = async function handler(event) {
   const hook = settled(hookResult);
   const mail = settled(mailResult);
 
-  if (hook.error) console.error('webhook failed:', hook.error);
+  if (hook.error) console.error('LEAD NOT DELIVERED:', hook.error, JSON.stringify(envelope));
   if (mail.error) console.error('email failed:', mail.error);
 
   // Delivery of the lead decides success for the visitor; a failed

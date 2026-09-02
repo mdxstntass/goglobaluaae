@@ -7,6 +7,7 @@
  */
 
 const assert = require('assert');
+const http = require('http');
 const { buildEnvelope } = require('../lib/payload');
 const { buildMessage } = require('../lib/mailer');
 const { handler } = require('../netlify/functions/data');
@@ -27,9 +28,9 @@ const SUBMISSION = {
 };
 
 let passed = 0;
-function check(label, fn) {
+async function check(label, fn) {
   try {
-    fn();
+    await fn();
     passed += 1;
     console.log(`  ok  ${label}`);
   } catch (e) {
@@ -42,19 +43,19 @@ function check(label, fn) {
   console.log('\n1. Envelope shape');
   const { envelope } = buildEnvelope(SUBMISSION, HEADERS, 'POST');
 
-  check('ip comes from the forwarded header', () => assert.strictEqual(envelope.ip, '3.17.184.97'));
-  check('method is POST', () => assert.strictEqual(envelope.method, 'POST'));
-  check('URL is the ambassador link', () =>
+  await check('ip comes from the forwarded header', () => assert.strictEqual(envelope.ip, '3.17.184.97'));
+  await check('method is POST', () => assert.strictEqual(envelope.method, 'POST'));
+  await check('URL is the ambassador link', () =>
     assert.strictEqual(envelope.URL, 'goglobal-uae.com/ambassador?=Sergey'));
-  check('user_agent is passed through', () =>
+  await check('user_agent is passed through', () =>
     assert.strictEqual(envelope.user_agent, 'axios/1.13.2'));
-  check('get is an empty object', () => assert.deepStrictEqual(envelope.get, {}));
-  check('post has exactly the agreed keys', () =>
+  await check('get is an empty object', () => assert.deepStrictEqual(envelope.get, {}));
+  await check('post has exactly the agreed keys', () =>
     assert.deepStrictEqual(Object.keys(envelope.post),
       ['title', 'name', 'email', 'phone', 'interest', 'comment']));
-  check('title is the CRM lead title', () =>
+  await check('title is the CRM lead title', () =>
     assert.strictEqual(envelope.post.title, 'Новый клиент'));
-  check('all five form fields survive', () => {
+  await check('all five form fields survive', () => {
     assert.strictEqual(envelope.post.name, 'Salim');
     assert.strictEqual(envelope.post.email, 'salimshorahmonov26@gmail.com');
     assert.strictEqual(envelope.post.phone, '+992300005588');
@@ -63,64 +64,96 @@ function check(label, fn) {
   });
 
   console.log('\n2. Ambassador name handling');
-  check('messy phone is normalised', () =>
+  await check('messy phone is normalised', () =>
     assert.strictEqual(
       buildEnvelope({ ...SUBMISSION, phone: '+992 (300) 00-55-88' }, HEADERS, 'POST').envelope.post.phone,
       '+992300005588'));
-  check('no ambassador falls back to the page URL', () =>
+  await check('no ambassador falls back to the page URL', () =>
     assert.strictEqual(
       buildEnvelope({ ...SUBMISSION, ambassador: '', pageUrl: 'https://goglobal-uae.com/ambassador.html' }, HEADERS, 'POST').envelope.URL,
       'goglobal-uae.com/ambassador.html'));
-  check('injection characters are stripped from the name', () =>
+  await check('injection characters are stripped from the name', () =>
     assert.strictEqual(
       buildEnvelope({ ...SUBMISSION, ambassador: '<script>x</script>Sergey' }, HEADERS, 'POST').envelope.URL,
       'goglobal-uae.com/ambassador?=scriptxscriptSergey'));
 
   console.log('\n3. Validation');
-  check('missing name is rejected', () =>
+  await check('missing name is rejected', () =>
     assert.ok(buildEnvelope({ ...SUBMISSION, name: '' }, HEADERS, 'POST').errors));
-  check('bad email is rejected', () =>
+  await check('bad email is rejected', () =>
     assert.ok(buildEnvelope({ ...SUBMISSION, email: 'nope' }, HEADERS, 'POST').errors));
-  check('short phone is rejected', () =>
+  await check('short phone is rejected', () =>
     assert.ok(buildEnvelope({ ...SUBMISSION, phone: '12' }, HEADERS, 'POST').errors));
 
   console.log('\n4. Confirmation email');
   const msg = buildMessage(envelope.post);
-  check('subject matches the spec', () =>
+  await check('subject matches the spec', () =>
     assert.strictEqual(msg.subject, 'Thank you for registering Salim'));
-  check('body greets the visitor', () =>
+  await check('body greets the visitor', () =>
     assert.ok(msg.html.includes('<h1>Hi Salim, thank you for registering.</h1>')));
-  check('body lists phone, interest and comment', () => {
+  await check('body lists phone, interest and comment', () => {
     assert.ok(msg.html.includes('Your phone number: +992300005588'));
     assert.ok(msg.html.includes('Area of interest: Other programs'));
     assert.ok(msg.html.includes('Comment: Hello, can you tell me'));
   });
-  check('html is escaped', () =>
+  await check('html is escaped', () =>
     assert.ok(buildMessage({ name: '<b>x</b>', phone: '', interest: '', comment: '' })
       .html.includes('&lt;b&gt;x&lt;/b&gt;')));
 
   console.log('\n5. HTTP controller');
+  // A local stub stands in for the webhook: the suite must never post a test
+  // lead to the real CRM, and must pass with no credentials present.
+  const received = [];
+  const stub = http.createServer((req, res) => {
+    let data = '';
+    req.on('data', (c) => { data += c; });
+    req.on('end', () => {
+      received.push(JSON.parse(data));
+      res.writeHead(200, { 'Content-Type': 'application/json' });
+      res.end('{"status":true}');
+    });
+  });
+  await new Promise((r) => stub.listen(0, r));
+  process.env.WEBHOOK_URL = `http://localhost:${stub.address().port}/in/test`;
+
   const ok = await handler({ httpMethod: 'POST', headers: HEADERS, body: JSON.stringify(SUBMISSION) });
   const okBody = JSON.parse(ok.body);
-  check('valid POST returns 200', () => assert.strictEqual(ok.statusCode, 200));
-  check('response echoes the envelope', () =>
+  await check('valid POST returns 200', () => assert.strictEqual(ok.statusCode, 200));
+  await check('response echoes the envelope', () =>
     assert.strictEqual(okBody.envelope.URL, 'goglobal-uae.com/ambassador?=Sergey'));
-  check('webhook result is reported', () =>
-    assert.ok(okBody.webhook && (okBody.webhook.skipped || okBody.webhook.status)));
-  check('no amoCRM key is reported any more', () =>
+  await check('webhook result is reported', () =>
+    assert.ok(okBody.webhook && (okBody.webhook.error || okBody.webhook.status)));
+  await check('no amoCRM key is reported any more', () =>
     assert.strictEqual(okBody.crm, undefined));
+  await check('an unconfigured webhook fails loudly instead of dropping the lead', () => {
+    const saved = process.env.WEBHOOK_URL;
+    delete process.env.WEBHOOK_URL;
+    return handler({ httpMethod: 'POST', headers: HEADERS, body: JSON.stringify(SUBMISSION) })
+      .then((r) => {
+        if (saved !== undefined) process.env.WEBHOOK_URL = saved;
+        assert.strictEqual(r.statusCode, 502, 'must not tell the visitor it succeeded');
+        assert.strictEqual(JSON.parse(r.body).ok, false);
+      });
+  });
 
   const bad = await handler({ httpMethod: 'POST', headers: HEADERS, body: JSON.stringify({ name: '' }) });
-  check('invalid POST returns 422', () => assert.strictEqual(bad.statusCode, 422));
+  await check('invalid POST returns 422', () => assert.strictEqual(bad.statusCode, 422));
 
   const get = await handler({ httpMethod: 'GET', headers: HEADERS, body: '' });
-  check('GET returns 405', () => assert.strictEqual(get.statusCode, 405));
+  await check('GET returns 405', () => assert.strictEqual(get.statusCode, 405));
 
   const opts = await handler({ httpMethod: 'OPTIONS', headers: HEADERS, body: '' });
-  check('OPTIONS preflight returns 204', () => assert.strictEqual(opts.statusCode, 204));
+  await check('OPTIONS preflight returns 204', () => assert.strictEqual(opts.statusCode, 204));
 
   const pot = await handler({ httpMethod: 'POST', headers: HEADERS, body: JSON.stringify({ ...SUBMISSION, website: 'spam' }) });
-  check('honeypot submission is silently accepted', () => assert.strictEqual(pot.statusCode, 200));
+  await check('honeypot submission is silently accepted', () => assert.strictEqual(pot.statusCode, 200));
+  await check('the webhook received the envelope, honeypot excluded', () => {
+    assert.strictEqual(received.length, 1, 'exactly one lead should be delivered');
+    assert.strictEqual(received[0].URL, 'goglobal-uae.com/ambassador?=Sergey');
+    assert.strictEqual(received[0].post.name, 'Salim');
+  });
+
+  stub.close();
 
   console.log(`\n${passed} checks passed${process.exitCode ? ' (with failures above)' : ''}\n`);
 })();
