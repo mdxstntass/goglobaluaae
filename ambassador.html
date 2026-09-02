@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+  <base href="/">
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Ambassador Program | GoGlobal UAE</title>
@@ -1828,7 +1829,10 @@ document.addEventListener('gg:langchange', sizeDropdown);
   const form = document.getElementById('contactForm');
   const successOverlay = document.getElementById('contactSuccess');
   const successClose = document.getElementById('contactSuccessClose');
-  const endpoint = '/api/data';
+  // Same-origin by default. Set window.GG_API_BASE (see lib/ambassador-client.js)
+  // when the page is served by something that cannot run the function, such as
+  // VS Code Live Server or a file:// double-click.
+  const endpoint = (window.GG_API_BASE || '') + '/api/data';
 
   if (!form) return;
 
@@ -1889,7 +1893,16 @@ document.addEventListener('gg:langchange', sizeDropdown);
       openSuccess();
     })
     .catch(function(error){
-      console.error('Form submit error:', error);
+      // Point at the usual cause rather than making the developer guess.
+      if (location.protocol === 'file:') {
+        console.error('Form submit error: the page was opened with file://, so "' + endpoint +
+          '" cannot be reached. Serve it with: node --env-file=.env test/local-server.js');
+      } else {
+        console.error('Form submit error (endpoint ' + endpoint + '):', error);
+        console.error('If this page is served by Live Server or similar, that server has no ' +
+          '/api/data. Either open http://localhost:8888 instead, or set ' +
+          'window.GG_API_BASE = "http://localhost:8888" before this script.');
+      }
       alert('Sorry, we could not send your request. Please try again or contact us directly.');
     })
     .finally(function(){
