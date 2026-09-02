@@ -1,0 +1,1906 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Ambassador Program | GoGlobal UAE</title>
+  <meta name="description" content="Become a GoGlobal UAE ambassador — represent a licensed Dubai education agency, refer students, and earn rewards." />
+
+  <!-- Anti-flash: set <html lang> from saved choice before paint so RU pages
+       don't flash English. The full swap happens in lang-bridge.js. -->
+  <script>
+    (function(){
+      try{
+        var l = localStorage.getItem('gg_lang');
+        if(l === 'ru' || l === 'en'){ document.documentElement.setAttribute('lang', l); }
+      }catch(e){}
+    })();
+  </script>
+
+  <style>
+/* =================== VARIABLES, BASE & BUTTONS =================== */
+:root{
+  --navy:#0B1F3B;
+  --text:#1b1f24;
+  --muted:#F5F1E9;
+  --muted-2:#F8F5EE;
+  --red:#c40d0d;
+  --red-2:#d62b23;
+  --gold:#C9A227;
+  --shadow:0 12px 30px rgba(0,0,0,.08);
+  --radius:16px; --radius-sm:12px; --rim:#b9b0a1;
+}
+
+*{box-sizing:border-box}
+html,body{height:100%}
+body{
+  margin:0;
+  font-family:"Vela Sans", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+  color:var(--text);
+  background:#F9F5EA;
+  line-height:1.6;
+}
+img{max-width:100%; display:block}
+.container{width:min(1200px,92%); margin-inline:auto}
+.center{text-align:center}
+.sr-only{position:absolute;left:-9999px;top:auto;width:1px;height:1px;overflow:hidden}
+
+.btn{
+  display:inline-flex; gap:.5rem; align-items:center; justify-content:center;
+  padding:.68rem 1.02rem; border-radius:999px; border:2px solid transparent;
+  font-weight:600; cursor:pointer; text-decoration:none; transition:.2s ease;
+}
+.btn .arrow{font-weight:700}
+.btn--cta{background:var(--red); color:#fff; padding:.78rem 1.1rem; border-radius:10px; font-size:1.1rem}
+.btn--cta:hover{background:var(--red-2)}
+.btn--gradient{
+  background:linear-gradient(90deg,#ff6b61,#c40d0d);
+  color:#fff; border:0; overflow:hidden; background-clip:padding-box;
+}
+.btn--gradient:hover{filter:brightness(1.02); transform:translateY(-1px); box-shadow:var(--shadow)}
+.btn--gradient-outline{
+  background:#fff; border-color:#d9d0c3; color:var(--text);
+}
+.btn--gradient-outline:hover{border-color:var(--red); color:var(--red)}
+
+/* =================== GLOBAL TYPOGRAPHY =================== */
+body, button, input, select, textarea {
+  font-family: "Vela Sans", "Poppins", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif !important;
+}
+h1,h2,h3,h4,h5,h6 { font-family: "Vela Sans", "Poppins", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif !important; }
+
+/* =================== LANGUAGE TOGGLE + HEADER (core) =================== */
+/* =================== LANGUAGE TOGGLE =================== */
+.lang-toggle{display:inline-flex; gap:2px; align-items:center; padding:3px; border-radius:999px; border:1px solid rgba(255,255,255,.45); background:rgba(255,255,255,.14); backdrop-filter:blur(10px); -webkit-backdrop-filter:blur(10px)}
+.lang-toggle button{appearance:none; border:0; cursor:pointer; font:inherit; font-weight:700; font-size:.82rem; line-height:1; letter-spacing:.02em; padding:.34rem .6rem; border-radius:999px; background:transparent; color:#fff; transition:.18s ease}
+.lang-toggle button:hover{background:rgba(255,255,255,.18)}
+.lang-toggle button.is-active,
+.lang-toggle button[aria-pressed="true"]{background:#fff; color:var(--red)}
+/* scrolled/dark header + non-hero pages */
+.header.dark .lang-toggle{border-color:#d9d0c3; background:#fff}
+.header.dark .lang-toggle button{color:var(--text)}
+.header.dark .lang-toggle button:hover{background:var(--muted)}
+.header.dark .lang-toggle button.is-active,
+.header.dark .lang-toggle button[aria-pressed="true"]{background:var(--red); color:#fff}
+/* footer variant (light background) */
+.lang-toggle--footer{border-color:#e2ddd0; background:#fff}
+.lang-toggle--footer button{color:var(--text)}
+.lang-toggle--footer button:hover{background:var(--muted)}
+.lang-toggle--footer button.is-active,
+.lang-toggle--footer button[aria-pressed="true"]{background:var(--red); color:#fff}
+
+/* =================== HEADER (fixed transparent) =================== */
+.header{
+  position:fixed; inset:0 0 auto 0; z-index:50;
+  background:transparent;
+  transition:color .2s ease;
+}
+.header__inner{display:flex; align-items:center; justify-content:space-between; padding:.9rem 0}
+.header__cluster{display:flex; align-items:center; gap:.75rem}
+.header__actions{display:none; align-items:center; gap:.5rem}
+.lang-toggle--header-mobile{display:none}
+.logo{display:flex; align-items:center; gap:.5rem; text-decoration:none}
+.logo__text{font-weight:700; letter-spacing:.02em; color:var(--text)}
+.logo__img{display:block; width:34px; height:34px}
+.nav__toggle{display:none; background:rgba(255,255,255,.2); border:0; width:44px;height:44px; border-radius:8px}
+.nav__burger, .nav__burger::before, .nav__burger::after{content:""; display:block; height:2px; background:#fff; margin:6px 10px}
+.nav__list{display:flex; list-style:none; margin:0; padding:0; gap:1rem; align-items:center}
+.nav{position:relative}
+.nav__list a, .nav__dropbtn{color:var(--text); text-decoration:none; font-weight:500; padding:.4rem .6rem; border-radius:8px}
+.nav__list a.is-active{opacity:.95}
+.nav__dropbtn{background:none; border:0; font:inherit; cursor:pointer; display:flex; align-items:center; gap:.35rem; line-height:1; height:44px}
+.caret{font-size:.8rem}
+
+.header.dark .logo__text{display:block}
+.header.dark .nav__list a,
+.header.dark .nav__dropbtn{color:var(--text)}
+.header.dark .nav__burger,
+.header.dark .nav__burger::before,
+.header.dark .nav__burger::after{background:var(--text)}
+
+.has-dropdown{position:relative}
+:root{--drop-shift:100px}
+.dropdown{display:none;
+  position:absolute; top:calc(100% + 6px); left:calc(-1 * var(--drop-shift));
+  display:none; gap:.25rem; padding:.2rem;
+  background:transparent; box-shadow:none; border-radius:10px;
+}
+.has-dropdown.open .dropdown{display:none;display:flex}
+.dropdown li{list-style:none}
+@media (min-width:769px){
+  .header .has-dropdown{
+    position: static;
+  }
+  .header .has-dropdown .dropdown{
+    left: var(--dd-left, 0);
+    right: auto;
+    width: var(--dd-width, auto);
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: space-between;
+    align-items: center;
+    gap: .5rem;
+    top: calc(100% + 6px);
+  }
+  .header .has-dropdown .dropdown li{
+    flex: 0 0 auto;
+  }
+}
+
+.dropdown a{
+  display:inline-block;
+  padding:.4rem .6rem;
+  border-radius: var(--nav-bubble-r);
+  color: inherit;
+  border: 1px solid transparent;
+  transition:
+    border-color .18s ease,
+    box-shadow .18s ease,
+    transform .18s ease,
+    background-color .18s ease;
+}
+.dropdown a:hover{
+  background: transparent;
+  border-color: var(--red);
+  box-shadow: 0 10px 26px rgba(0,0,0,.12);
+  transform: translateY(-1px);
+}
+.header.dark .dropdown a:hover{
+  background: transparent;
+}
+
+/* =================== HEADER: responsive nav drawer + dropdown positioning + logo =================== */
+@media (max-width:768px){
+  .service-cards{grid-template-columns:1fr}
+  
+  .request{
+    padding:1.5rem 1.3rem 1.8rem;
+  }
+  .contacts{
+    padding:1.5rem 1.3rem;
+  }
+}
+
+.has-dropdown.open .dropdown{display:flex}
+.nav{--drop-left: 0px; --drop-right: 0px}
+.has-dropdown .dropdown{position:absolute; display:none; top:100%; left:var(--dd-left,0px); width:var(--dd-width,auto); gap:.35rem; padding:.3rem .35rem; background:transparent; box-shadow:none; border-radius:12px; flex-direction:row;}
+.has-dropdown .dropdown a{line-height:1.2}
+.has-dropdown .dropdown:hover{display:flex}
+
+.logo{align-items:center; gap:.6rem}
+.logo__img{display:block; width:44px; height:44px}
+.logo__text{line-height:1}
+
+.nav__list>li{display:flex;align-items:center}
+
+.has-dropdown.open .dropdown{display:flex}
+
+.logo{align-items:center}
+
+.header .has-dropdown .dropdown a{ color:#fff }
+.header.dark .has-dropdown .dropdown a{ color:var(--text) }
+
+.header:not(.dark) .has-dropdown .dropdown{ background:rgba(255,255,255,.08) }
+.header.dark .has-dropdown .dropdown{ background:#fff; box-shadow:var(--shadow) }
+
+/* =================== HEADER: 1024px+ sizing + contact anchor offset =================== */
+@media (min-width:1024px){
+  .header .container{ width: min(1200px, 96%) !important; }
+  .header .logo{ margin-left: -8px; }
+  .header .header__inner{ padding-block: 1.04rem !important; }
+  .logo__img{ width: 50px !important; height: 50px !important; }
+  .nav__list{ gap: 1.16rem !important; }
+  .nav__list a, .nav__dropbtn{ font-size: 115% !important; padding: .46rem .69rem !important; }
+  .nav__dropbtn{ height: 50px !important; }
+  .caret{ font-size: .92rem !important; }
+  .btn--cta{ font-size: 1.27rem !important; padding: .90rem 1.27rem !important; }
+  .nav__toggle{ width:50px !important; height:50px !important; }
+}
+
+/* Anchor offset for slide 7/contact under fixed header */
+#contact, #slide7 { scroll-margin-top: 96px; }
+
+/* =================== HEADER: nav bubbles + CTA + final desktop layout =================== */
+/* === BEGIN: HEADER NAV static bubbles === */
+:root{ --nav-bubble-r:14px; }
+
+.header .nav__list a,
+.header .nav__dropbtn{
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: .35rem;
+  padding: .5rem .72rem;
+  line-height: 1;
+  border-radius: var(--nav-bubble-r);
+  border: 1px solid transparent;
+  box-shadow: 0 8px 20px rgba(0,0,0,.08);
+  transition: transform .18s ease, box-shadow .18s ease, border-color .18s ease, background-color .18s ease;
+}
+
+/* On hero (transparent header) — frosted bubbles */
+.header:not(.dark) .nav__list a,
+.header:not(.dark) .nav__dropbtn{
+  background: rgba(255,255,255,.18);
+  border-color: rgba(255,255,255,.38);
+  -webkit-backdrop-filter: blur(16px) saturate(120%);
+  backdrop-filter: blur(16px) saturate(120%);
+  color:#fff;
+}
+
+/* Scrolled (“dark”) header — soft cream pills */
+.header.dark .nav__list a,
+.header.dark .nav__dropbtn{
+  background:#F7F4ED;
+  border-color:#d8d3c7;
+  color:var(--text);
+}
+
+/* Hover/active states */
+.header .nav__list a:hover,
+.header .nav__dropbtn:hover{
+  transform: translateY(-1px);
+  border-color: var(--red);
+  box-shadow: 0 10px 26px rgba(0,0,0,.12);
+}
+.header .nav__list a.is-active{
+  border-color: var(--red);
+  box-shadow: 0 12px 28px rgba(196,13,13,.18);
+}
+
+/* Keep CTA button consistent */
+.header .btn--cta{ border-radius: var(--nav-bubble-r); }
+
+/* Optional: bubble look for dropdown items too */
+.header .dropdown a{
+  background: rgba(255,255,255,.92);
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+}
+.header .dropdown a:hover{
+  background:#fff;
+  border-color: var(--red);
+  color:#111;
+}
+
+/* Mobile: simplify (no frosted bubbles inside the slide-up sheet) */
+@media (max-width:768px){
+  .header .nav__list a:not(.btn--cta),
+  .header .nav__dropbtn{
+    background: transparent !important;
+    border-color: transparent !important;
+    box-shadow: none !important;
+    transform:none !important;
+    width:100%;
+    justify-content:flex-start;
+    padding:.7rem 0 !important;
+  }
+  .header .dropdown a{
+    background: transparent;
+    border:0;
+  }
+}
+/* === END: HEADER NAV static bubbles === */
+
+
+/* === NAV BUBBLES: match "Services" size & revert CTA === */
+
+/* Lock all nav links to the same size as the Services (dropbtn) */
+@media (min-width: 769px){
+.header .nav__list a,
+.header .nav__dropbtn{
+  height: 50px !important;
+  padding: .46rem .69rem !important;
+  font-size: 115% !important;
+  border-radius: var(--nav-bubble-r);
+  display: inline-flex;
+  align-items: center;
+}
+}
+
+/* Revert Contact Us button to its old style */
+.header .btn--cta{
+  background: var(--red) !important;
+  color: #fff !important;
+  border-radius: 10px !important;
+  box-shadow: none !important;
+  /* keep the project-wide size override already present */
+}
+.header .btn--cta:hover{
+  background: var(--red-2) !important;
+}
+
+
+/* === HEADER LAYOUT: push everything to the right (desktop) === */
+@media (min-width: 769px){
+  .header__inner{
+    justify-content: flex-end !important;
+  }
+  .header .logo{
+    margin-right: 1.25rem;
+  }
+}
+
+
+/* === HEADER LAYOUT: logo left, everything else right; links spread across header === */
+@media (min-width: 769px){
+  .header__inner{
+    display: flex;
+    align-items: center;
+    justify-content: flex-start !important;
+    gap: 1rem;
+  }
+  /* keep logo pinned to the left */
+  .header .logo{
+    margin-right: auto !important;
+  }
+  /* nav occupies the remaining space */
+  .header .nav{
+    flex: 1 1 auto;
+    min-width: 0;
+  }
+  /* spread links across the full header width (right side of logo) */
+  .header .nav__list{
+    display: grid !important;
+    grid-auto-flow: column;
+    justify-content: space-between;
+    align-items: center;
+    gap: 0 !important;        /* spacing handled by distribution */
+    position: static;         /* desktop inline; mobile rule retains fixed */
+    transform: none;
+    padding: 0;
+    box-shadow: none;
+    background: transparent;
+  }
+  /* keep dropdown trigger inline with same distribution */
+  .header .nav__list > li{
+    display: contents; /* let anchors/buttons participate directly in the grid flow */
+  }
+  /* ensure the CTA stays at the far right cell cleanly */
+  .header .nav__list > li:last-child{
+    justify-self: end;
+  }
+}
+
+/* Mobile menu remains as a fixed bottom sheet via existing rules */
+
+
+/* === REVERT HEADER LAYOUT to first version (logo left, nav right) — keep bubbles === */
+@media (min-width: 769px){
+  .header__inner{
+    justify-content: space-between !important; /* back to original */
+    gap: 0.75rem;
+  }
+  .header .logo{
+    margin-right: 0 !important; /* no auto push */
+  }
+  .header .nav{
+    flex: 0 0 auto; /* nav sized by content (original) */
+    min-width: unset;
+  }
+  /* Desktop nav back to flex row with natural gaps */
+  .header .nav__list{
+    display: flex !important;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    gap: 1rem !important;
+    align-items: center;
+    position: static;      /* desktop inline */
+    transform: none;
+    background: transparent;
+    box-shadow: none;
+  }
+  .header .nav__list > li{
+    display: block;        /* undo display:contents from grid patch */
+  }
+  .header .nav__list > li:last-child{
+    justify-self: auto;    /* neutralize grid-specific alignment */
+  }
+}
+
+/* =================== CONTACT SECTION =================== */
+.contact-section{
+  position:relative;
+  overflow:hidden;
+  z-index:0;
+  background:#F9F5EA;
+}
+.contact-section .contact-wrap{
+  width:min(1200px,92%);
+  margin:0 auto;
+  padding:72px 0 120px;
+  display:grid;
+  grid-template-columns:1.05fr .95fr;
+  grid-template-rows:auto 1fr;
+  gap:48px;
+  align-items:start;
+}
+.contact-section .header-row{
+  grid-column:1 / -1;
+}
+.contact-section .h1{
+  font-size:clamp(2rem,3.4vw,2.8rem);
+  line-height:1.15;
+  font-weight:700;
+  margin:0 0 .5rem;
+}
+.contact-section .sub{
+  font-size:1rem;
+  line-height:1.5;
+  color:var(--red);
+  font-weight:500;
+  max-width:560px;
+  margin:0 0 2rem;
+}
+
+/* form */
+.contact-section .contact-form{
+  grid-column:1;
+  border:2px solid var(--red);
+  border-radius:14px;
+  background:transparent;
+  padding:24px;
+  background:#F9F5EA;
+  box-shadow:0 8px 24px rgba(0,0,0,.06);
+}
+.contact-section .f-row{
+  display:grid;
+  gap:14px;
+}
+.contact-section .input,
+.contact-section .textarea,
+.contact-section .select{
+  width:100%;
+  border:1px solid #D9D4CB;
+  border-radius:9px;
+  padding:14px 16px;
+  background:#fff;
+  font-size:16px;
+  outline:none;
+}
+.contact-section .input:focus,
+.contact-section .textarea:focus,
+.contact-section .select:focus{
+  border-color:var(--red);
+  box-shadow:0 0 0 3px rgba(196,13,13,.12);
+}
+.contact-section .textarea{
+  min-height:110px;
+  resize:vertical;
+}
+.contact-section .select{
+  appearance:none;
+  -webkit-appearance:none;
+  -moz-appearance:none;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 24 24' fill='none' stroke='%23BB0101' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
+  background-repeat:no-repeat;
+  background-position:right 14px center;
+  background-size:18px 18px;
+  padding-right:44px;
+}
+
+/* submit row and button */
+.contact-section .submit-row{
+  display:flex;
+  align-items:center;
+  gap:16px;
+  margin-top:10px;
+  flex-wrap:wrap;
+}
+.contact-section .btn{
+  background:var(--red);
+  color:#fff;
+  border:none;
+  border-radius:12px;
+  padding:14px 22px;
+  font-size:16px;
+  font-weight:600;
+  cursor:pointer;
+  white-space:nowrap;
+  transition:transform .06s ease, box-shadow .2s ease, background .2s ease;
+}
+.contact-section .btn:hover{
+  background:#a80000;
+  box-shadow:0 8px 18px rgba(196,13,13,.24);
+}
+.contact-section .btn:active{
+  transform:translateY(1px);
+}
+.contact-section .consent{
+  font-size:12px;
+  color:#8A877F;
+  max-width:260px;
+  line-height:1.35;
+}
+
+/* contact card */
+.contact-section .contact-card{
+  grid-column:2;
+  background:#F9F5EA;
+  border:1.5px solid #D7D1C7;
+  border-radius:14px;
+  padding:22px 24px;
+  box-shadow:0 8px 24px rgba(0,0,0,.06);
+}
+.contact-section .info{
+  display:grid;
+  gap:16px;
+}
+.contact-section .info-item{
+  display:grid;
+  grid-template-columns:32px 1fr;
+  align-items:start;
+  gap:12px;
+  padding:10px 0;
+}
+.contact-section .i{
+  width:32px;
+  height:32px;
+  display:grid;
+  place-items:center;
+}
+.contact-section .i svg{
+  width:24px;
+  height:24px;
+  display:block;
+  color:var(--red);
+}
+.contact-section .info-title{
+  color:var(--red);
+  font-weight:700;
+  font-size:14px;
+  line-height:1.1;
+}
+.contact-section .info-desc{
+  color:#1A1A1A;
+  font-size:14px;
+}
+
+/* socials row inside card */
+.contact-section .social-bar{
+  margin-top:18px;
+  background:#EFE9DF;
+  border:1.5px solid #D7D1C7;
+  border-radius:14px;
+  padding:12px 18px;
+}
+.contact-section .social-grid{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  align-items:center;
+}
+.contact-section .sbtn{
+  display:grid;
+  place-items:center;
+  width:100%;
+  height:48px;
+  border-radius:999px;
+  text-decoration:none;
+  transition:background .2s ease, transform .06s ease;
+}
+.contact-section .sbtn:hover{
+  background:rgba(187,1,1,.08);
+}
+.contact-section .sbtn:active{
+  transform:translateY(1px);
+}
+.contact-section .sbtn svg{
+  width:24px;
+  height:24px;
+  color:var(--red);
+}
+
+/* decorative wave */
+.contact-section .wave{
+  position:absolute;
+  left:0;
+  right:0;
+  bottom:-80px;
+  height:260px;
+  pointer-events:none;
+  opacity:.8;
+  z-index:-1;
+}
+.contact-section .wave svg{
+  width:100%;
+  height:100%;
+  display:block;
+}
+
+/* responsive */
+@media (max-width:1024px){
+  .contact-section .contact-wrap{
+    grid-template-columns:1fr;
+    grid-template-rows:auto auto;
+    gap:28px;
+    padding-bottom:90px;
+  }
+  .contact-section .contact-card{
+    grid-column:1;
+  }
+  .contact-section .sub{
+    max-width:none;
+  }
+}
+@media (max-width:640px){
+  .contact-section .submit-row{
+    flex-direction:column;
+    align-items:flex-start;
+  }
+}
+
+/* =================== CONTACT + FOOTER: hard icon-size clamp =================== */
+/* ========= HARD CLAMP FOR CONTACT + FOOTER ICONS (ALL WIDTHS) ========= */
+
+/* Contact card icons (map pin, phone, email, messengers) */
+.contact-card .i svg,
+.contact-card .social-bar svg{
+  width:24px !important;
+  height:24px !important;
+  max-width:24px !important;
+  max-height:24px !important;
+}
+
+/* Make the icon wrapper itself fixed size */
+.contact-card .i{
+  width:28px !important;
+  height:28px !important;
+  min-width:28px !important;
+  min-height:28px !important;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+
+/* Footer service/company ticks + phone/mail/address + socials */
+.footer .grid svg{
+  width:22px !important;
+  height:22px !important;
+  max-width:22px !important;
+  max-height:22px !important;
+  flex:0 0 22px !important;
+}
+
+/* Footer tick specifically a bit smaller */
+.footer .tick{
+  width:18px !important;
+  height:18px !important;
+}
+
+/* Kill any default bullets / blue links in footer lists, for sure */
+.footer ul{
+  list-style:none !important;
+  margin:0;
+  padding:0;
+}
+.footer ul li{
+  display:flex;
+  align-items:center;
+  gap:10px;
+}
+.footer ul li a{
+  color:#111 !important;
+  text-decoration:none !important;
+}
+.footer ul li a:hover{
+  color:var(--red) !important;
+}
+
+/* =================== SUCCESS POPUP =================== */
+.contact-success-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,.45);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  z-index: 120;
+}
+.contact-success-overlay[hidden] {
+  display: none;
+}
+.contact-success {
+  background: var(--panel-cream, #F9F5EA);
+  border-radius: 14px;
+  border: 2px solid var(--brand-red, #BB0101);
+  box-shadow: 0 8px 24px rgba(0,0,0,.08);
+  max-width: 420px;
+  width: 100%;
+  padding: 24px 24px 20px;
+  text-align: center;
+}
+.contact-success__title {
+  margin: 0 0 8px;
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--text, #1A1A1A);
+}
+.contact-success__text {
+  margin: 0 0 18px;
+  font-size: 15px;
+  color: var(--muted, #6B6B6B);
+}
+.contact-success__btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px 18px;
+  border-radius: 999px;
+  border: none;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 15px;
+  background: linear-gradient(135deg, var(--brand-red, #BB0101), #FD6060);
+  color: #fff;
+  box-shadow: 0 10px 24px rgba(187,1,1,.18);
+}
+.contact-success__btn:focus-visible {
+  outline: 3px solid rgba(187,1,1,.6);
+  outline-offset: 2px;
+}
+
+/* =================== FOOTER =================== */
+/* =================== FOOTER (ecourse style reused on main) =================== */
+.footer{
+  background:#fff;
+  padding:40px 0 28px;
+  border-top:1px solid #eee;
+  color:var(--text);
+}
+.footer .grid{
+  display:grid;
+  grid-template-columns:1.2fr 1fr 1fr 1.1fr;
+  gap:20px 22px;
+  align-items:flex-start;
+  padding-bottom:8px;
+}
+.footer .foot-brand{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  font-weight:700;
+  font-size:24px;
+  color:var(--red);
+}
+.footer .foot-brand .logo{
+  width:56px;
+  height:46px;
+  border-radius:8px;
+  display:block;
+  object-fit:contain;
+}
+.footer .desc{
+  margin-top:12px;
+  font-size:18px;
+  font-weight:500;
+  color:#111;
+}
+.footer .col-title{
+  color:var(--red);
+  font-weight:700;
+  font-size:18px;
+  margin:0 0 10px;
+}
+.footer ul{
+  list-style:none;
+  margin:0;
+  padding:0;
+  display:grid;
+  gap:8px;
+}
+.footer li{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  font-size:18px;
+  font-weight:500;
+}
+.footer .tick{
+  width:26px;
+  height:22px;
+}
+.footer .tick path{
+  stroke:var(--red);
+  stroke-width:3;
+  stroke-linecap:round;
+  fill:none;
+  stroke-dasharray:60;
+  stroke-dashoffset:0;
+}
+.footer .footer-contact li svg{
+  flex:0 0 24px;
+}
+.footer a{
+  color:#111;
+  text-decoration:none;
+}
+.footer a:hover{
+  color:var(--red);
+}
+.footer .legal{
+  margin-top:18px;
+  display:flex;
+  gap:18px;
+  align-items:center;
+  justify-content:space-between;
+  flex-wrap:wrap;
+  color:#525252;
+  font-size:16px;
+}
+
+/* footer navigation links */
+.footer ul li a{
+  color:#111;
+  text-decoration:none;
+}
+.footer ul li a:hover{
+  color:var(--red);
+}
+.footer ul li a:focus{
+  outline:2px solid var(--red);
+  outline-offset:2px;
+}
+
+/* tick hover animation */
+@keyframes tick-redraw{
+  0%{ stroke-dashoffset:60; }
+  20%{ stroke-dashoffset:60; }
+  100%{ stroke-dashoffset:0; }
+}
+.footer li:hover .tick path,
+.footer li:focus-within .tick path{
+  animation:tick-redraw .6s ease;
+}
+.check-icon svg path{
+  stroke-dasharray:60;
+  stroke-dashoffset:0;
+}
+.facts-item:hover .check-icon svg path,
+.facts-item:focus-within .check-icon svg path,
+.ticks li:hover .check-icon svg path,
+.ticks li:focus-within .check-icon svg path{
+  animation:tick-redraw .6s ease;
+}
+
+
+/* responsive footer grid */
+@media (max-width:1024px){
+  .footer .grid{
+    grid-template-columns:1fr 1fr;
+  }
+}
+@media (max-width:600px){
+  .footer .grid{
+    grid-template-columns:1fr;
+  }
+}
+
+
+/* ===== PLACEHOLDER SECTIONS (scoped under .pg) ===== */
+.pg{
+  --bg:#F9F5EA;
+  --red:#BB0101;
+  --red-light:#FD6060;
+  --text:#000;
+  --white:#fff;
+  --radius:16px;
+  max-width:1200px;
+  margin:0 auto;
+  padding:0 24px;
+}
+@keyframes tick-draw{
+  from{ stroke-dashoffset:60; }
+  to{ stroke-dashoffset:0; }
+}
+
+/* ----- HERO ----- */
+    /* ===== Hero ===== */
+.pg .hero{margin-top:24px;background:var(--red);border-radius:var(--radius);padding:32px;display:grid;grid-template-columns:1fr 352px;gap:32px;min-height:320px;position:relative;overflow:visible}
+.pg .hero h1{margin:0;color:var(--white);font-size:48px;font-weight:500;text-transform:uppercase;letter-spacing:.2px;line-height:1.1}
+.pg .hero .shot{align-self:start;width:352px;height:233px;object-fit:cover;border-radius:16px}
+.pg .crumb{position:absolute;left:32px;bottom:32px;background:var(--bg);color:var(--text);border-radius:16px;padding:12px 20px;font-size:18px;font-weight:500;line-height:1}
+    @media (max-width:920px){ .pg .hero{grid-template-columns:1fr} .pg .hero .shot{width:100%;height:220px} .pg .crumb{position:static;margin-top:16px;display:inline-block}}
+
+/* ----- PACKAGES (pricing) ----- */
+  /* ===== Pricing (interactive cards) ===== */
+.pg .pricing{margin-top:84px}
+.pg .pricing h2{text-align:center;color:var(--text);font-size:36px;font-weight:500;margin:0 0 28px}
+.pg .pricing-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:28px}
+.pg .price-card{position:relative;background:var(--bg);border:1px solid var(--red);border-radius:18px;min-height:411px;padding:24px 20px 20px;display:grid;grid-template-rows:auto auto 1fr auto;align-items:start;transition:border-width .15s ease,transform .15s ease}
+.pg .price-card:hover, .pg .price-card:focus-within{border-width:2px;transform:translateY(-2px)}
+.pg .price-card .badge{position:absolute;left:50%;transform:translateX(-50%);top:-18px;background:linear-gradient(135deg,var(--red) 0%, var(--red-light) 54%, var(--red) 100%);color:#fff;border-radius:12px;padding:6px 14px;font-size:18px;font-weight:500;line-height:1}
+.pg .tier{margin:6px 0 4px;text-align:center;color:#000;font-size:18px;font-weight:700;text-transform:uppercase}
+.pg .price{margin:6px 0 8px;text-align:center;color:var(--red);font-size:36px;font-weight:500}
+.pg .features{list-style:none;margin:16px 0 24px;padding:0;display:grid;gap:14px}
+.pg .features li{position:relative;padding-left:32px;color:#000;font-size:16px;font-weight:500}
+.pg .features li svg{position:absolute;left:0;top:1px;width:22px;height:19px}
+.pg .features li svg path{stroke:var(--red);stroke-width:2.5;stroke-linecap:round;stroke-dasharray:60;stroke-dashoffset:0;transition:stroke-dashoffset .5s ease;fill:none}
+.price-card:hover .features li svg path,
+.pg .price-card:focus-within .features li svg path{animation:tick-draw .5s ease forwards}
+.pg .price-card:hover .features li svg path, .pg .price-card:focus-within .features li svg path{stroke-dashoffset:0}
+.price-card:hover .features li svg path,
+.pg .price-card:focus-within .features li svg path{animation:tick-draw .5s ease forwards}
+.pg .pick-btn{justify-self:center;width:200px;height:42px;border-radius:12px;border:1px solid var(--red);background:transparent;color:#525252;font-size:18px;font-weight:500;display:inline-flex;align-items:center;justify-content:space-between;padding:0 14px;gap:10px;cursor:pointer;transition:background .18s ease,color .18s ease,border-color .18s ease,opacity .18s ease,transform .18s ease;opacity:1;transform:translateY(0);pointer-events:none}
+.pg .pick-btn svg{width:34px;height:15px}
+.pg .pick-btn svg path{fill:var(--red);transition:fill .18s ease}
+.pg .pick-btn:hover, .pg .pick-btn:focus-visible{background:linear-gradient(135deg,var(--red) 0%, var(--red-light) 54%, var(--red) 100%);color:#fff;border-color:transparent}
+.pg .pick-btn:hover svg path, .pg .pick-btn:focus-visible svg path{fill:#fff}
+    @media (max-width:1100px){ .pg .pricing-grid{grid-template-columns:repeat(2,1fr)}}
+    @media (max-width:680px){ .pg .pricing-grid{grid-template-columns:1fr}}
+.pg .price-card:hover .pick-btn, .pg .price-card:focus-within .pick-btn{opacity:1;transform:translateY(0);pointer-events:auto}
+
+/* ----- STEPS / CARDS 01-05 ----- */
+  /* ===== Steps page (full-bleed) ===== */
+.pg .steps-bleed{margin-top:0;background:#fff;padding:48px 0}
+.pg .steps{max-width:1200px;margin:0 auto;padding:0 24px}
+.pg .steps h2{margin:0;text-align:center;font-size:36px;font-weight:500;color:#000}
+.pg .steps .subhead{margin-top:8px;text-align:center;font-size:18px;font-weight:600;color:var(--red)}
+.pg .steps-grid{margin-top:36px;display:grid;grid-template-columns:repeat(12,1fr);gap:28px}
+.pg .step-card{grid-column:span 4;min-height:285px;border:2px solid var(--red);border-radius:18px;padding:20px;display:flex;flex-direction:column;gap:14px;transition:box-shadow .18s ease, transform .18s ease, border-width .18s ease}
+.pg .step-card:hover{transform:translateY(-2px);box-shadow:0 10px 24px rgba(0,0,0,.08), 0 0 0 1px var(--red) inset}
+.pg .step-num{font-size:36px;font-weight:700;color:var(--red);line-height:1;position:relative;z-index:1}
+.pg .step-title{margin:0;font-size:18px;font-weight:700;color:#000}
+.pg .step-box{border-radius:12px;padding:22px 20px;margin-top:6px}
+.pg .step-text{margin:0;font-size:18px;font-weight:400;color:#000}
+.pg .step-header{display:flex;align-items:center;gap:12px}
+.pg .step-num::before{content:none}
+.pg .step-card:hover .step-num::before, .pg .step-card:focus-within .step-num::before{opacity:1;transform:translate(-50%,-50%) scale(1)}
+.pg .theme-cream .step-num::before{background:#F9F5EA}
+.pg .theme-gray .step-num::before{background:#EAEAEA}
+.pg .theme-cream .step-box{background:#F9F5EA}
+.pg .theme-gray  .step-box{background:#EAEAEA}
+    /* center the second row like in the mockup */
+.pg .steps-grid > .step-card:nth-child(4){grid-column:3 / span 4}
+.pg .steps-grid > .step-card:nth-child(5){grid-column:7 / span 4}
+    @media (max-width:1100px){
+.pg .steps-grid{grid-template-columns:repeat(6,1fr)}
+.pg .step-card{grid-column:span 6}
+.pg .steps-grid > .step-card:nth-child(4){grid-column:span 6}
+.pg .steps-grid > .step-card:nth-child(5){grid-column:span 6}
+    }
+    @media (max-width:680px){
+.pg .steps-grid{grid-template-columns:repeat(4,1fr)}
+.pg .step-card{grid-column:span 4}
+    }
+  /* ===== Life at boarding school ===== */
+
+/* ----- FAQ ----- */
+  /* ===== FAQ ===== */
+.pg .faq{background:#fff;padding:48px 0}
+.pg .faq .inner{max-width:1200px;margin:0 auto;padding:0 24px}
+.pg .faq h2{margin:0 0 24px;text-align:center;font-size:36px;font-weight:500;color:#000}
+.pg .faq-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:20px 40px}
+.pg .faq-item{background:#F9F5EA;border-radius:16px;overflow:hidden}
+.pg .faq-item[open]{background:#F9F5EA}
+.pg .faq-item summary{list-style:none;display:flex;align-items:center;justify-content:space-between;gap:16px;padding:18px 22px;cursor:pointer;font-size:18px;font-weight:500;color:#000}
+.pg .faq-item summary::-webkit-details-marker{display:none}
+.pg .faq-item .arrow{width:23px;height:15px;flex:0 0 auto;transition:transform .18s ease}
+.pg .faq-item[open] .arrow{transform:rotate(90deg)}
+.pg .faq-a{padding:0 22px 18px;font-size:18px;font-weight:400;color:#000;border-top:1px solid #E7DCC7}
+    @media (max-width:900px){ .pg .faq-grid{grid-template-columns:1fr}}
+
+
+
+/* Placeholder hero must clear the fixed header */
+.pg .hero{ margin-top: 96px; }
+@media (max-width:768px){ .pg .hero{ margin-top: 84px; } }
+
+  </style>
+
+  <!-- Force header text dark on all slides (interior pages have no hero) -->
+  <style>
+    /* Force header text black on all slides (including hero) */
+      .header .logo__text,
+      .header .nav__list a,
+      .header .nav__dropbtn{
+        color: var(--text) !important;
+      }
+
+
+
+      /* Keep "Request a Consultation" CTA text white in header */
+      .header .nav__list a.btn--cta{
+        color:#fff !important;
+      }
+  </style>
+<style>
+  /* Mobile menu: keep Request Consultation CTA visible in red */
+  @media (max-width: 768px) {
+    .header .nav__list a.btn--cta {
+      display: inline-flex !important;
+      align-items: center;
+      justify-content: center;
+      background: var(--red) !important;
+      color: #fff !important;
+      border-radius: 10px !important;
+      box-shadow: none !important;
+      width: 100%;
+      margin-top: 0.75rem;
+      padding: 0.75rem 1rem !important;
+      font-size: 1rem !important;
+      font-weight: 600 !important;
+      height: auto !important;
+      text-align: center;
+      border: none !important;
+    }
+    .header .nav__list a.btn--cta:hover {
+      background: var(--red-2) !important;
+      color: #fff !important;
+    }
+    .nav__list > li:has(.btn--cta) {
+      margin-top: 0.5rem;
+    }
+    /* Align Services dropdown trigger with other menu items */
+    .header .nav__dropbtn {
+      display: block !important;
+      width: 100% !important;
+      height: auto !important;
+      min-height: 0 !important;
+      padding: .7rem 0 !important;
+      text-align: left !important;
+      font-size: 1rem !important;
+      border-radius: 0 !important;
+      box-shadow: none !important;
+      border: none !important;
+    }
+  }
+
+/* === Mobile nav drawer (match testimonials) === */
+@media (max-width: 768px){
+  .header__actions{
+    display:flex;
+  }
+
+  .header__cluster{
+    margin-left:auto;
+    gap:.5rem;
+  }
+
+  .nav .gg-lang-toggle{
+    display:none !important;
+  }
+
+  .header .lang-toggle--header-mobile{
+    display:inline-flex;
+    gap:2px;
+    align-items:center;
+    padding:3px;
+    border-radius:999px;
+    border:0;
+    background:#fff;
+    box-shadow:0 10px 30px rgba(0,0,0,.18);
+    backdrop-filter:none;
+    -webkit-backdrop-filter:none;
+  }
+
+  .header .lang-toggle--header-mobile button{
+    border:0;
+    cursor:pointer;
+    padding:.34rem .6rem;
+    border-radius:999px;
+    background:transparent;
+    color:var(--text);
+    font:inherit;
+    font-weight:700;
+    font-size:.82rem;
+    line-height:1;
+  }
+
+  .header .lang-toggle--header-mobile button:hover{
+    background:var(--muted, #F5F1E9);
+  }
+
+  .header .lang-toggle--header-mobile button.is-active,
+  .header .lang-toggle--header-mobile button[aria-pressed="true"]{
+    background:var(--red);
+    color:#fff;
+  }
+
+  .nav__toggle{
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    padding: 0;
+    border-radius: 999px;
+    border: 0;
+    background: #ffffff;
+    box-shadow: 0 10px 30px rgba(0,0,0,.18);
+  }
+
+  .nav__burger,
+  .nav__burger::before,
+  .nav__burger::after{
+    position: relative;
+    display: block;
+    width: 22px;
+    height: 2px;
+    margin: 0;
+    border-radius: 999px;
+    background: #BD0505;
+    transition: transform .2s ease, opacity .2s ease;
+  }
+
+  .nav__burger::before,
+  .nav__burger::after{
+    content: "";
+    position: absolute;
+    left: 0;
+  }
+  .nav__burger::before{
+    transform: translateY(-6px);
+  }
+  .nav__burger::after{
+    transform: translateY(6px);
+  }
+
+  .nav__toggle.is-open .nav__burger{
+    transform: rotate(45deg);
+  }
+  .nav__toggle.is-open .nav__burger::before{
+    transform: rotate(-90deg);
+  }
+  .nav__toggle.is-open .nav__burger::after{
+    opacity: 0;
+  }
+
+  .nav__list{
+    position: fixed;
+    top: 12px;
+    left: 0;
+    bottom: 12px;
+    width: 80%;
+    max-width: 360px;
+    background: #ffffff;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0;
+    padding: 1.25rem 1.5rem 1.75rem;
+    border-radius: 0 24px 24px 0;
+    box-shadow: 0 12px 40px rgba(0,0,0,.24);
+    transform: translateX(-110%);
+    opacity: 0;
+    pointer-events: none;
+    transition: transform .25s ease, opacity .2s ease;
+    z-index: 1000;
+  }
+
+  .nav__list.open{
+    transform: translateX(0);
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  .nav__list > li{
+    width: 100%;
+  }
+
+  .nav__list a:not(.btn--cta),
+  .nav__dropbtn{
+    display: block;
+    width: 100%;
+    padding: .7rem 0;
+    text-align: left;
+    background: none;
+    border-radius: 0;
+    color: #111;
+    font-size: 1rem;
+    font-weight: 500;
+  }
+
+  .nav__list .btn--cta{
+    margin-top: .5rem;
+    align-self: stretch;
+    justify-content: center;
+  }
+
+  .has-dropdown{
+    width: 100%;
+  }
+
+  .has-dropdown .dropdown{
+    position: static;
+    display: none;
+    flex-direction: column;
+    padding: .25rem 0 .5rem;
+    margin-left: 0;
+    background: transparent;
+    box-shadow: none;
+  }
+
+  .has-dropdown.open .dropdown{
+    display: flex;
+  }
+
+  .has-dropdown .dropdown a{
+    padding: .4rem 0 .4rem 1.25rem;
+    font-size: .95rem;
+    color: #111 !important;
+  }
+}
+
+/* Language toggle (header + footer) */
+.gg-lang-toggle{
+  display:inline-flex;
+  align-items:center;
+  gap:4px;
+  padding:3px;
+  border-radius:999px;
+  background:rgba(11,31,59,0.06);
+}
+.gg-lang-toggle button{
+  border:0;
+  cursor:pointer;
+  padding:5px 12px;
+  border-radius:999px;
+  background:transparent;
+  color:var(--navy);
+  font-size:13px;
+  font-weight:700;
+  line-height:1;
+  transition:background .14s ease, color .14s ease;
+}
+.gg-lang-toggle button.is-active,
+.gg-lang-toggle button[aria-pressed="true"]{
+  background:#BB0101;
+  color:#fff;
+}
+.nav .gg-lang-toggle{ margin-left:8px; }
+
+@media (min-width: 769px) {
+  header.header {
+    padding-block: 0 !important;
+    background: transparent !important;
+  }
+  .header > .container.header__inner {
+    width: min(1200px, 92%) !important;
+    max-width: none;
+    margin-inline: auto !important;
+    padding-inline: 0 !important;
+  }
+  .header__inner {
+    justify-content: space-between !important;
+    gap: 0.75rem;
+  }
+  .header .logo {
+    margin-right: 0 !important;
+    gap: .5rem !important;
+  }
+  .header .nav {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: flex-end !important;
+    gap: 0 !important;
+    flex: 0 0 auto !important;
+    min-width: unset !important;
+  }
+  .header .nav__list {
+    display: flex !important;
+    gap: 1rem !important;
+    flex: 0 1 auto !important;
+  }
+  .header .nav__list > li {
+    display: block !important;
+    justify-self: auto !important;
+  }
+  .nav .gg-lang-toggle {
+    margin-left: 8px;
+    flex-shrink: 0;
+  }
+}
+</style>
+</head>
+<body>
+  <!-- =================== HEADER =================== -->
+  <header class="header transparent" id="header" aria-label="Main navigation">
+    <div class="container header__inner">
+      <a href="index.html" class="logo" aria-label="Go Global Education">
+        <img class="logo__img" src="assets/logo.png" alt="GoGlobal UAE educational consulting Dubai logo" width="28" height="28" />
+        <span class="logo__text">GO GLOBAL UAE</span>
+      </a>
+
+      <div class="header__cluster">
+        <div class="header__actions">
+          <div class="lang-toggle lang-toggle--header-mobile" role="group" aria-label="Language">
+            <button type="button" data-lang-btn="en" aria-pressed="true">EN</button>
+            <button type="button" data-lang-btn="ru" aria-pressed="false">РУ</button>
+          </div>
+
+          <button class="nav__toggle" id="navToggle" aria-expanded="false" aria-controls="navMenu" aria-label="Open menu">
+            <span class="nav__burger"></span>
+            <span class="sr-only">Menu</span>
+          </button>
+        </div>
+
+        <nav class="nav" aria-label="Primary menu">
+          <ul class="nav__list" id="navMenu">
+          <li><a href="index.html" data-i18n="common.nav_home">Home</a></li>
+
+          <!-- Dropdown — Services -->
+          <li class="has-dropdown">
+            <button class="nav__dropbtn" id="servicesMenuBtn" aria-haspopup="true" aria-expanded="false">
+              <span data-i18n="common.nav_services">Services</span> <span class="caret">▾</span>
+            </button>
+            <ul class="dropdown" id="servicesDropdown" role="menu" aria-label="Services submenu">
+              <li role="none"><a role="menuitem" href="ecourse_en.html" data-i18n="common.nav_english_courses">English Courses</a></li>
+              <li role="none"><a role="menuitem" href="euniuae_en.html" data-i18n="common.nav_university_admissions">University Admissions</a></li>
+              <li role="none"><a role="menuitem" href="boarding_en.html" data-i18n="common.nav_boarding_school">Boarding School</a></li>
+              <li role="none"><a role="menuitem" href="schools_en.html" data-i18n="common.nav_school_admission">School Admission</a></li>
+            </ul>
+          </li>
+
+          <li><a href="testimonials.html" data-i18n="common.nav_testimonials">Testimonials</a></li>
+          <li><a href="partners_en.html" data-i18n="common.nav_partners">Partners</a></li>
+          <li><a href="#contact" data-i18n="common.nav_contacts">Contacts</a></li>
+          <li><a class="btn btn--cta" href="#contact" data-i18n="common.request_a_consultation">Request a Consultation</a></li>
+        </ul>
+
+        <div class="gg-lang-toggle" role="group" aria-label="Language / Язык">
+          <button type="button" data-lang-btn="en" aria-pressed="true">EN</button>
+          <button type="button" data-lang-btn="ru" aria-pressed="false">РУ</button>
+        </div>
+        </nav>
+      </div>
+    </div>
+  </header>
+
+  <main>
+
+
+    <div class="pg">
+
+<!-- ===== HERO ===== -->
+<section class="hero" id="home">
+  <h1 data-i18n="ambassador.title">Ambassador Program</h1>
+  <img src="assets/uaef.png" alt="GoGlobal UAE ambassador program" class="shot"/>
+  <div class="crumb"><a href="index.html" data-i18n="common.nav_home">Home</a> / <b data-i18n="ambassador.crumb">Ambassador</b></div>
+</section>
+
+    </div>
+
+
+    <!-- =================== CONTACT =================== -->
+    <footer class="contact-section" id="contact">
+      <div class="contact-wrap">
+        <div class="header-row">
+          <h2 class="h1" data-i18n="common.contact_us">Contact us!</h2>
+          <p class="sub" data-i18n="common.contact_sub">Get a free consultation about your study options abroad!</p>
+        </div>
+
+        <form class="contact-form" id="contactForm">
+          <div class="f-row">
+            <input class="input" type="text" name="name" placeholder="Your name" required data-i18n-attr="placeholder:common.ph_name">
+            <input class="input" type="tel" name="phone" placeholder="Phone number" required data-i18n-attr="placeholder:common.ph_phone">
+            <input class="input" type="email" name="email" placeholder="Email" required data-i18n-attr="placeholder:common.ph_email">
+            <select class="select" name="interest" aria-label="Area of interest" data-i18n-attr="aria-label:common.area_of_interest">
+              <option value="" selected disabled data-i18n="common.area_of_interest">Area of interest</option>
+              <option data-i18n="common.opt_english_courses">English courses in Dubai</option>
+              <option data-i18n="common.opt_university">Admission to universities</option>
+              <option data-i18n="common.opt_school_abroad">School abroad</option>
+              <option data-i18n="common.opt_other">Other programs</option>
+            </select>
+            <textarea class="textarea" name="comment" placeholder="Your comment (optional)" data-i18n-attr="placeholder:common.ph_comment"></textarea>
+            <input type="text" name="website" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px;width:1px;height:1px;opacity:0">
+          </div>
+          <div class="submit-row">
+            <button class="btn" type="submit" data-i18n="common.apply_now">Apply now</button>
+            <div class="consent" data-i18n="common.consent_note">*By clicking the button, you agree to the privacy policy</div>
+          </div>
+        </form>
+
+        <aside class="contact-card" aria-label="Contacts">
+          <div class="info">
+            <div class="info-item">
+              <div class="i" aria-hidden="true">
+                <!-- clock -->
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"></circle><path d="M12 7v5l3 2"></path></svg>
+              </div>
+              <div>
+                <div class="info-title" data-i18n="common.hours">Hours</div>
+                <div class="info-desc" data-i18n="common.hours_value">Mon–Fri: 9:00 – 18:00 (GMT+4)</div>
+              </div>
+            </div>
+
+            <div class="info-item">
+              <div class="i" aria-hidden="true">
+                <!-- phone -->
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6A19.79 19.79 0 0 1 2.12 4.18 2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.12.9.32 1.77.58 2.61a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.47-1.15a2 2 0 0 1 2.11-.45c.84.26 1.71.46 2.61.58A2 2 0 0 1 22 16.92z"/></svg>
+              </div>
+              <div>
+                <div class="info-title" data-i18n="common.phone">Phone</div>
+                <div class="info-desc">+971 525228757</div>
+              </div>
+            </div>
+
+            <div class="info-item">
+              <div class="i" aria-hidden="true">
+                <!-- mail -->
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
+              </div>
+              <div>
+                <div class="info-title" data-i18n="common.email">Email</div>
+                <div class="info-desc">admin@goglobal-uae.com</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="social-bar" aria-label="Social & Messengers">
+            <div class="social-grid">
+              <a class="sbtn" href="https://wa.me/971525228757" target="_blank" rel="noreferrer" aria-label="WhatsApp">
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  <path fill="currentColor"
+                        d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15
+                           -.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075
+                           -.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059
+                           -.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52
+                           .149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52
+                           -.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51
+                           -.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372
+                           -.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074
+                           .149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625
+                           .712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413
+                           .248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004
+                           a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374
+                           a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884
+                           2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994
+                           c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297
+                           A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892
+                           c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654
+                           a11.882 11.882 0 005.683 1.448h.005
+                           c6.554 0 11.89-5.335 11.893-11.893
+                           a11.821 11.821 0 00-3.48-8.413Z" />
+                </svg>
+              </a>
+
+              <a class="sbtn" href="https://t.me/SnezhanaGoGlobal" target="_blank" rel="noreferrer" aria-label="Telegram">
+                <svg viewBox="0 0 24 24"
+                     fill="none"
+                     stroke="currentColor"
+                     stroke-width="2"
+                     stroke-linecap="round"
+                     stroke-linejoin="round"
+                     aria-hidden="true">
+                  <path d="M22 2L11 13" />
+                  <path d="M22 2l-7 20-4-9-9-4 20-7z" />
+                </svg>
+              </a>
+
+              <a class="sbtn" href="https://www.instagram.com/openmalta" target="_blank" rel="noreferrer" aria-label="Instagram">
+                <svg viewBox="0 0 24 24"
+                     fill="none"
+                     stroke="currentColor"
+                     stroke-width="2"
+                     stroke-linecap="round"
+                     stroke-linejoin="round"
+                     aria-hidden="true">
+                  <rect x="2" y="2" width="20" height="20" rx="5" ry="5" />
+                  <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" />
+                  <line x1="17.5" y1="6.5" x2="17.51" y2="6.5" />
+                </svg>
+              </a>
+
+              <a class="sbtn" href="https://youtube.com/@openmalta?si=RfllhByU-ojCO-4D" target="_blank" rel="noreferrer" aria-label="YouTube">
+                <svg viewBox="0 0 24 24"
+                     fill="none"
+                     stroke="currentColor"
+                     stroke-width="2"
+                     stroke-linecap="round"
+                     stroke-linejoin="round"
+                     aria-hidden="true">
+                  <path d="M22.54 6.42A2.78 2.78 0 0 0 20.5 4.4
+                           C18.88 4 12 4 12 4s-6.88 0-8.5.4
+                           A2.78 2.78 0 0 0 1.46 6.42
+                           29 29 0 0 0 1 12
+                           a29 29 0 0 0 .46 5.58
+                           2.78 2.78 0 0 0 2.04 2.02
+                           C5.12 20 12 20 12 20s6.88 0 8.5-.4
+                           a2.78 2.78 0 0 0 2.04-2.02
+                           A29 29 0 0 0 23 12
+                           a29 29 0 0 0-.46-5.58z" />
+                  <path d="M9.75 15.02L15.5 12 9.75 8.98v6.04z" />
+                </svg>
+              </a>
+            </div>
+          </div>
+        </aside>
+      </div>
+
+      <!-- Decorative wave -->
+      <div class="wave">
+        <svg viewBox="0 0 1440 260" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+          <path d="M313.263 72.6845C186.947 140.101 63.1579 194.034 0 221H1440V6C1440 6 1435.18 17 1376.84 47.9653C1318.5 78.9306 1133.29 80.2249 1009.5 60C885.711 39.7752 811.789 27.1732 676.5 41.5C541.211 55.8268 439.579 5.26719 313.263 72.6845Z" fill="url(#g)"/>
+          <defs>
+            <linearGradient id="g" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#E8DDCC"/>
+              <stop offset="100%" stop-color="#F9F5EA"/>
+            </linearGradient>
+          </defs>
+        </svg>
+      </div>
+    </footer>
+
+  </main>
+
+  <!-- =================== FOOTER =================== -->
+  <footer class="footer" id="footer">
+    <div class="container">
+      <div class="grid">
+
+        <!-- Brand + blurb -->
+        <div>
+          <div class="foot-brand">
+            <img class="logo" src="assets/logo_red.png" alt="GoGlobal UAE educational consulting Dubai logo">
+            <span>GO GLOBAL UAE</span>
+          </div>
+          <p class="desc">
+            <span data-i18n="common.foot_desc_1">A licensed education agency with an office in Dubai.</span>
+            <span data-i18n="common.foot_desc_2">We’ve been helping students study abroad since 2016.</span>
+          </p>
+        </div>
+
+        <!-- Services -->
+        <div>
+          <p class="col-title" data-i18n="common.foot_services">Services</p>
+          <ul>
+            <li>
+              <svg class="tick" viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M4 12l5 5 11-11"></path>
+              </svg>
+              <a href="ecourse_en.html" data-i18n="common.nav_english_courses">English Courses</a>
+            </li>
+            <li>
+              <svg class="tick" viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M4 12l5 5 11-11"></path>
+              </svg>
+              <a href="euniuae_en.html" data-i18n="common.nav_university">University Admissions</a>
+            </li>
+            <li>
+              <svg class="tick" viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M4 12l5 5 11-11"></path>
+              </svg>
+              <a href="boarding_en.html" data-i18n="common.foot_boarding_schools">Boarding Schools</a>
+            </li>
+            <li>
+              <svg class="tick" viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M4 12l5 5 11-11"></path>
+              </svg>
+              <a href="schools_en.html" data-i18n="common.nav_school_admission">School Admission</a>
+            </li>
+          </ul>
+        </div>
+
+        <!-- Company -->
+        <div>
+          <p class="col-title" data-i18n="common.foot_company">Company</p>
+          <ul>
+            <li>
+              <svg class="tick" viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M4 12l5 5 11-11"></path>
+              </svg>
+              <a href="under-maintenance.html" data-i18n="common.foot_about_us">About us</a>
+            </li>
+            <li>
+              <svg class="tick" viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M4 12l5 5 11-11"></path>
+              </svg>
+              <a href="partners_en.html" data-i18n="common.nav_partners">Partners</a>
+            </li>
+            <li>
+              <svg class="tick" viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M4 12l5 5 11-11"></path>
+              </svg>
+              <a href="under-maintenance.html" data-i18n="common.foot_faq">FAQ</a>
+            </li>
+            <li>
+              <svg class="tick" viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M4 12l5 5 11-11"></path>
+              </svg>
+              <a href="#contact" data-i18n="common.nav_contacts">Contacts</a>
+            </li>
+          </ul>
+        </div>
+
+        <!-- Contacts column -->
+        <div class="footer-contact">
+          <p class="col-title" data-i18n="common.foot_address">Address</p>
+          <ul>
+            <li>
+              <svg width="24" height="24"
+                   viewBox="0 0 32 39"
+                   aria-hidden="true">
+                <path fill="#BB0101"
+                      d="M12.65 36.54C13.73 37.41 14.85 38.22 16 39c1.15-.77 2.27-1.59 3.35-2.46 1.8-1.46 3.5-3.05 5.07-4.74C28.06 27.87 32 22.19 32 15.8c0-2.07-.41-4.12-1.22-6.05a15.87 15.87 0 0 0-5.47-6A16 16 0 0 0 0 15.8c0 6.39 3.94 12.08 7.58 16 1.58 1.7 3.28 3.28 5.07 4.74ZM16 21.51a5.7 5.7 0 1 1 0-11.41 5.7 5.7 0 0 1 0 11.41Z" />
+              </svg>
+              <span data-i18n="common.foot_address_value">Meydan Grandstand, 6th floor, Meydan Road, Nad Al Sheba, Dubai, U.A.E.</span>
+            </li>
+          </ul>
+
+          <p class="col-title" style="margin-top:14px" data-i18n="common.phone">Phone</p>
+          <ul>
+            <li>
+              <svg width="24" height="24"
+                   viewBox="0 0 32 32"
+                   aria-hidden="true">
+                <path fill="#BB0101"
+                      d="M26.7 20.9c-1.5-.7-3.1-1.4-4.7-2.1-.9-.4-1.9-.2-2.6.5l-1.5 1.5c-2.3-1.2-4.2-3.1-5.4-5.4l1.5-1.5c.7-.7.9-1.7.5-2.6-.7-1.6-1.3-3.2-2.1-4.7-.6-1.2-1.8-2-3.1-2H7.1C5.9 5 5 5.9 5 7.1 5 17 13 25 22.9 25c1.2 0 2.1-.9 2.1-2.1v-.3c0-1.3-.8-2.5-2-3.1z"/>
+              </svg>
+              <span>+971 525228757</span>
+            </li>
+          </ul>
+
+          <p class="col-title" style="margin-top:14px" data-i18n="common.email">Email</p>
+          <ul>
+            <li>
+              <svg width="24" height="24"
+                   viewBox="0 0 32 24"
+                   aria-hidden="true">
+                <rect x="1" y="3" width="30" height="18" rx="3" ry="3"
+                      fill="#BB0101" opacity="0.1" />
+                <path fill="#BB0101"
+                      d="M2 4l14 9 14-9v2l-14 9L2 6V4z" />
+              </svg>
+              <span>admin@goglobal-uae.com</span>
+            </li>
+          </ul>
+
+          <p class="col-title" style="margin-top:14px" data-i18n="common.foot_instagram">Instagram</p>
+          <ul>
+            <li>
+              <svg width="24" height="24"
+                   viewBox="0 0 24 24"
+                   aria-hidden="true">
+                <rect x="2" y="2" width="20" height="20" rx="5" ry="5"
+                      fill="none" stroke="#BB0101" stroke-width="2" />
+                <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"
+                      fill="none" stroke="#BB0101" stroke-width="2" />
+                <circle cx="17.5" cy="6.5" r="1"
+                        fill="#BB0101" />
+              </svg>
+              <a href="https://www.instagram.com/openmalta" target="_blank" rel="noreferrer">
+                @openmalta
+              </a>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- legal row -->
+      <div class="legal">
+        <div data-i18n="common.foot_copyright">© 2025 GoGlobal Education. All rights reserved</div>
+        <div style="display:flex; gap:18px; flex-wrap:wrap; align-items:center">
+          <a href="data-policy.html" data-i18n="common.foot_privacy">Privacy Policy</a>
+          <a href="user-agreement.html" data-i18n="common.foot_terms">Terms of Use</a>
+          <a href="cookie-policy.html" data-i18n="common.foot_cookie">Cookie Policy</a>
+          <!-- Footer language toggle (mirrors the header one; shares gg_lang) -->
+          <div class="lang-toggle lang-toggle--footer" role="group" aria-label="Language" data-i18n-attr="aria-label:common.lang_group_label">
+            <button type="button" data-lang-btn="en" aria-pressed="true">EN</button>
+            <button type="button" data-lang-btn="ru" aria-pressed="false">РУ</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- =================== SUCCESS POPUP =================== -->
+  <div class="contact-success-overlay" id="contactSuccess" hidden>
+    <div class="contact-success">
+      <h3 class="contact-success__title" data-i18n="common.req_success_title">Your request is submitted successfully</h3>
+      <p class="contact-success__text" data-i18n="common.req_success_text">Thank you! Our manager will contact you soon to clarify the details.</p>
+      <button type="button" class="contact-success__btn" id="contactSuccessClose" data-i18n="common.ok">OK</button>
+    </div>
+  </div>
+
+  <!-- =================== HEADER / NAV / DROPDOWN JS =================== -->
+  <script>
+// =================== Header: transparent, dark text after hero ===================
+const header = document.getElementById('header');
+
+let darkLogo = 'assets/logo_black.png';
+(function(){
+  const test = new Image();
+  test.onload = ()=>{ darkLogo = 'assets/logo_black.png'; };
+  test.onerror = ()=>{ darkLogo = 'assets/logo_red.png'; };
+  test.src = darkLogo + '?v=' + Date.now();
+})();
+
+const logoImg = document.querySelector('.logo__img');
+function updateHeaderTone(){
+  const hero = document.getElementById('home');
+  let overHero = false;
+  if(hero){
+    const rect = hero.getBoundingClientRect();
+    overHero = rect.bottom > 80;
+  }
+  if(overHero){ header.classList.remove('dark'); }
+  else{ header.classList.add('dark'); }
+  if(logoImg){
+    logoImg.src = header.classList.contains('dark') ? darkLogo : 'assets/logo.png';
+  }
+}
+updateHeaderTone();
+window.addEventListener('scroll', updateHeaderTone);
+window.addEventListener('resize', updateHeaderTone);
+
+// =================== Mobile menu ===================
+const navToggle = document.getElementById('navToggle');
+const navMenu = document.getElementById('navMenu');
+navToggle?.addEventListener('click', ()=>{
+  const open = navMenu.classList.toggle('open');
+  navToggle.setAttribute('aria-expanded', String(open));
+  navToggle.classList.toggle('is-open', open);
+});
+
+navMenu?.querySelectorAll('a').forEach(link => {
+  link.addEventListener('click', () => {
+    if(window.innerWidth <= 768){
+      navMenu.classList.remove('open');
+      navToggle?.setAttribute('aria-expanded', 'false');
+      navToggle?.classList.remove('is-open');
+    }
+  });
+});
+
+document.addEventListener('keydown', (e)=>{
+  if(e.key === 'Escape' && navMenu?.classList.contains('open')){
+    navMenu.classList.remove('open');
+    navToggle?.setAttribute('aria-expanded', 'false');
+    navToggle?.classList.remove('is-open');
+  }
+});
+
+// =================== Dropdown (Services) ===================
+const servicesBtn = document.getElementById('servicesMenuBtn');
+const servicesDrop = document.getElementById('servicesDropdown');
+function openDrop(open){
+  if(open){ servicesBtn.setAttribute('aria-expanded','true'); servicesBtn.closest('.has-dropdown')?.classList.add('open'); }
+  else{ servicesBtn.setAttribute('aria-expanded','false'); servicesBtn.closest('.has-dropdown')?.classList.remove('open'); }
+}
+servicesBtn?.addEventListener('click', (e)=>{
+  e.stopPropagation();
+  const isOpen = servicesBtn.getAttribute('aria-expanded') === 'true';
+  openDrop(!isOpen);
+});
+document.addEventListener('click', (e)=>{
+  if(!servicesDrop.contains(e.target) && e.target !== servicesBtn){ openDrop(false) }
+});
+servicesBtn?.addEventListener('mouseenter', ()=> openDrop(true));
+servicesBtn?.closest('.has-dropdown')?.addEventListener('mouseleave', ()=> openDrop(false));
+
+// =================== Smart dropdown sizing (desktop) ===================
+const navEl = document.querySelector('.nav');
+const hasDrop = document.querySelector('.has-dropdown');
+const drop = document.getElementById('servicesDropdown');
+const ctaBtn = document.querySelector('.nav__list a.btn--cta');
+
+function sizeDropdown(){
+  if(!hasDrop || !drop || !navEl) return;
+  if(window.innerWidth <= 768){
+    hasDrop.style.removeProperty('--dd-left');
+    hasDrop.style.removeProperty('--dd-width');
+    return;
+  }
+  if(!servicesBtn || !ctaBtn) return;
+  const navRect = navEl.getBoundingClientRect();
+  const servicesLeft = servicesBtn.getBoundingClientRect().left;
+  const ctaRight = ctaBtn.getBoundingClientRect().right;
+  hasDrop.style.setProperty('--dd-left', (servicesLeft - navRect.left) + 'px');
+  hasDrop.style.setProperty('--dd-width', (ctaRight - servicesLeft) + 'px');
+}
+
+sizeDropdown();
+window.addEventListener('resize', sizeDropdown);
+window.addEventListener('load', ()=> setTimeout(sizeDropdown, 100));
+setTimeout(sizeDropdown, 200);
+servicesBtn?.addEventListener('mouseenter', sizeDropdown);
+document.addEventListener('gg:langchange', sizeDropdown);
+
+  </script>
+
+  <script src="lib/ambassador-client.js"></script>
+
+  <!-- =================== CONTACT FORM JS =================== -->
+  <script>
+// =================== Contact Form Submission ===================
+(function(){
+  const form = document.getElementById('contactForm');
+  const successOverlay = document.getElementById('contactSuccess');
+  const successClose = document.getElementById('contactSuccessClose');
+  const endpoint = '/api/data';
+
+  if (!form) return;
+
+  function openSuccess() {
+    if (!successOverlay) return;
+    successOverlay.removeAttribute('hidden');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeSuccess() {
+    if (!successOverlay) return;
+    successOverlay.setAttribute('hidden', '');
+    document.body.style.overflow = '';
+  }
+
+  successClose?.addEventListener('click', closeSuccess);
+  successOverlay?.addEventListener('click', function(e){
+    if (e.target === successOverlay) {
+      closeSuccess();
+    }
+  });
+  document.addEventListener('keydown', function(e){
+    if (e.key === 'Escape') {
+      closeSuccess();
+    }
+  });
+
+  form.addEventListener('submit', function(e){
+    e.preventDefault();
+
+    const formData = {
+      name: form.elements['name']?.value || '',
+      phone: form.elements['phone']?.value || '',
+      email: form.elements['email']?.value || '',
+      interest: form.elements['interest']?.value || '',
+      comment: form.elements['comment']?.value || '',
+      website: form.elements['website']?.value || '',
+      ambassador: window.GGAmbassador ? window.GGAmbassador.get() : '',
+      pageUrl: window.GGAmbassador ? window.GGAmbassador.pageUrl() : location.href,
+      source: 'ambassador page'
+    };
+
+    const submitBtn = form.querySelector('button[type="submit"]');
+    if (submitBtn) submitBtn.disabled = true;
+
+    fetch(endpoint, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(formData)
+    })
+    .then(function(response){
+      if (!response.ok) {
+        throw new Error('Request failed with status ' + response.status);
+      }
+      form.reset();
+      openSuccess();
+    })
+    .catch(function(error){
+      console.error('Form submit error:', error);
+      alert('Sorry, we could not send your request. Please try again or contact us directly.');
+    })
+    .finally(function(){
+      if (submitBtn) submitBtn.disabled = false;
+    });
+  });
+})();
+  </script>
+
+  <!-- Language bridge: translations first, then the runtime (keep LAST) -->
+  <script src="gg-translations.js"></script>
+  <script src="lang-bridge.js"></script>
+</body>
+</html>

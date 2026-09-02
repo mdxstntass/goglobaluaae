@@ -1,0 +1,19 @@
+[build]
+  publish = "."
+  functions = "netlify/functions"
+
+# POST endpoint used by the contact form
+[[redirects]]
+  from = "/api/data"
+  to = "/.netlify/functions/data"
+  status = 200
+  force = true
+
+# Ambassador vanity links: goglobal-uae.com/ambassador/Sergey
+[[redirects]]
+  from = "/ambassador/*"
+  to = "/ambassador.html"
+  status = 200
+
+[functions]
+  node_bundler = "esbuild"

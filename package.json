@@ -1,0 +1,15 @@
+{
+  "name": "goglobal-uae",
+  "version": "1.0.0",
+  "description": "GoGlobal UAE site + amoCRM lead intake API",
+  "private": true,
+  "type": "commonjs",
+  "scripts": {
+    "dev": "node test/local-server.js",
+    "test": "node test/post-test.js"
+  },
+  "engines": { "node": ">=18" },
+  "dependencies": {
+    "nodemailer": "^6.9.14"
+  }
+}
