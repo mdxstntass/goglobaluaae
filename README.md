@@ -1,7 +1,7 @@
 # GoGlobal UAE — lead intake
 
-Static site plus a single POST controller that takes the contact form,
-pushes the lead into **amoCRM**, and emails the visitor a confirmation.
+Static site plus a single POST controller that takes the contact form, sends
+the lead as JSON to the **tglk webhook**, and emails the visitor a confirmation.
 
 ## Layout
 
@@ -9,18 +9,18 @@ pushes the lead into **amoCRM**, and emails the visitor a confirmation.
 |---|---|
 | [ambassador.html](ambassador.html) | The page with the contact form |
 | [lib/ambassador-client.js](lib/ambassador-client.js) | Reads the ambassador name from the URL, remembers it 30 days |
-| [lib/payload.js](lib/payload.js) | Validation + the exact JSON envelope sent to the CRM |
-| [lib/amocrm.js](lib/amocrm.js) | amoCRM v4 client (lead + contact + note) |
+| [lib/payload.js](lib/payload.js) | Validation + the exact JSON envelope that is sent |
+| [lib/webhook.js](lib/webhook.js) | Posts the envelope to the webhook, with retries |
 | [lib/mailer.js](lib/mailer.js) | Confirmation email via SMTP |
 | [netlify/functions/data.js](netlify/functions/data.js) | The `POST /api/data` controller |
 | [test/local-server.js](test/local-server.js) | Runs the site and the function locally |
-| [test/post-test.js](test/post-test.js) | 25 checks over the whole flow |
+| [test/post-test.js](test/post-test.js) | 26 checks over the whole flow |
 
 ## Run it
 
 ```bash
 npm install
-cp .env.example .env      # fill in amoCRM + SMTP
+cp .env.example .env      # fill in WEBHOOK_URL + SMTP
 npm test                  # no credentials needed
 node --env-file=.env test/local-server.js
 ```
@@ -62,20 +62,16 @@ an ambassador link, browses, and submits later is still credited correctly.
 }
 ```
 
-It goes to amoCRM as a lead (`POST /api/v4/leads/complex`) with an embedded
-contact, and the full envelope is attached to the lead as a note so nothing is
-lost even if a custom field id is missing.
+That exact object is POSTed to `WEBHOOK_URL`. The webhook is the only
+destination — nothing talks to the amoCRM API directly; the hook handles
+everything on the CRM side.
 
-## amoCRM credentials
-
-amoCRM retired the old user-hash API key, so the "API key" here is a
-**long-lived access token**: amoCRM → Settings → Integrations → your
-integration → *Long-lived token*. Put it in `AMOCRM_TOKEN` and your account URL
-in `AMOCRM_BASE_URL`. Field ids are optional — without them the lead is still
-created, and every value survives in the note.
+A transient failure is retried twice with a short backoff, since a duplicate
+lead costs less than a lost one. A 4xx other than 429 is not retried, and every
+failed attempt is logged.
 
 ## Deploy
 
-Netlify, `publish = "."`. Set every var from `.env.example` in
-Site settings → Environment variables. `netlify.toml` maps `/api/data` to the
+Netlify, `publish = "."`. Set `WEBHOOK_URL` and the `SMTP_*` vars from
+`.env.example` in Site settings → Environment variables. `netlify.toml` maps `/api/data` to the
 function and `/ambassador/*` to the page.

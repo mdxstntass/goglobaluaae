@@ -2,7 +2,6 @@
 
 const { buildEnvelope } = require('../../lib/payload');
 const webhook = require('../../lib/webhook');
-const amocrm = require('../../lib/amocrm');
 const mailer = require('../../lib/mailer');
 
 const ALLOWED_ORIGINS = (process.env.ALLOWED_ORIGINS || '')
@@ -50,15 +49,13 @@ exports.handler = async function handler(event) {
     return reply(422, { ok: false, errors: built.errors }, origin);
   }
 
-  const { envelope, ambassador } = built;
+  const { envelope } = built;
   console.log('lead envelope:', JSON.stringify(envelope));
 
-  // The three destinations are independent — one failing must not lose the
-  // others. The webhook feeds amoCRM; the direct amoCRM client only runs when
-  // AMOCRM_BASE_URL/AMOCRM_TOKEN are set, for accounts that skip the webhook.
-  const [hookResult, crmResult, mailResult] = await Promise.allSettled([
+  // The webhook and the email are independent — one failing must not lose the
+  // other. The webhook is the only destination for the lead itself.
+  const [hookResult, mailResult] = await Promise.allSettled([
     webhook.send(envelope),
-    amocrm.createLead(envelope, ambassador),
     mailer.sendConfirmation(envelope.post),
   ]);
 
@@ -67,19 +64,13 @@ exports.handler = async function handler(event) {
     : { error: r.reason && r.reason.message });
 
   const hook = settled(hookResult);
-  const crm = settled(crmResult);
   const mail = settled(mailResult);
 
   if (hook.error) console.error('webhook failed:', hook.error);
-  if (crm.error) console.error('amoCRM failed:', crm.error);
   if (mail.error) console.error('email failed:', mail.error);
 
-  // The lead reaching the CRM is what decides success for the visitor; a
-  // failed confirmation email must not make them submit the form again.
-  const delivered = (hook.skipped ? null : !hook.error);
-  const crmDirect = (crm.skipped ? null : !crm.error);
-  const ok = delivered === true || crmDirect === true
-    || (delivered === null && crmDirect === null);
-
-  return reply(ok ? 200 : 502, { ok, webhook: hook, crm, mail, envelope }, origin);
+  // Delivery of the lead decides success for the visitor; a failed
+  // confirmation email must not make them submit the form again.
+  const ok = !hook.error;
+  return reply(ok ? 200 : 502, { ok, webhook: hook, mail, envelope }, origin);
 };
