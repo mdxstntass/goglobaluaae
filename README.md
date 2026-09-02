@@ -70,6 +70,28 @@ A transient failure is retried twice with a short backoff, since a duplicate
 lead costs less than a lost one. A 4xx other than 429 is not retried, and every
 failed attempt is logged.
 
+## Email
+
+Confirmation mail goes out through **Postmark**. Postmark uses the *Server API
+Token* as both `SMTP_USER` and `SMTP_PASS` — that is not a mistake. Use port
+**587** or **2525** with STARTTLS (`SMTP_SECURE=false`); ports 25, 465 and 8080
+are not open on `smtp.postmarkapp.com`.
+
+`MAIL_FROM` must be a verified Sender Signature in Postmark.
+
+### Deliverability
+
+`goglobal-uae.com` currently publishes:
+
+```
+v=spf1 include:secureserver.net -all      # Microsoft 365 / GoDaddy, no Postmark
+```
+
+and has **no DKIM record for Postmark and no DMARC record**. Mail will send,
+but it is unsigned for the domain, so inbox placement will be worse than it
+should be. Add the DKIM record Postmark shows under *Sender Signatures → DKIM*
+to fix it.
+
 ## Deploy
 
 Netlify, `publish = "."`. Set `WEBHOOK_URL` and the `SMTP_*` vars from
